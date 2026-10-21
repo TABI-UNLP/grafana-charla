@@ -1,0 +1,1269 @@
+{
+  "uid": "charla-grafana-demo",
+  "title": "Charla Grafana · Demo con datos públicos",
+  "tags": [
+    "charla",
+    "demo"
+  ],
+  "timezone": "browser",
+  "time": {
+    "from": "now-24h",
+    "to": "now+48h"
+  },
+  "refresh": "5m",
+  "schemaVersion": 39,
+  "panels": [
+    {
+      "id": 1,
+      "type": "row",
+      "title": "Clima en Buenos Aires · Open-Meteo (JSON público, sin API key)",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Temperatura actual",
+      "description": "Temperatura del aire a 2 m del suelo, medida ahora. Azul < 10 °C, verde hasta 25 °C, naranja hasta 32 °C, rojo arriba.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 1,
+        "w": 4,
+        "h": 6
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "table",
+          "url": "https://api.open-meteo.com/v1/forecast?latitude=-34.6037&longitude=-58.3816&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation&timezone=UTC&past_days=1&forecast_days=2",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "current",
+          "columns": [
+            {
+              "selector": "temperature_2m",
+              "text": "Temperatura",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 25
+              },
+              {
+                "color": "red",
+                "value": 32
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value"
+      }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Sensación térmica",
+      "description": "Temperatura aparente: combina temperatura, humedad y viento. Es lo que 'siente' una persona.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 1,
+        "w": 4,
+        "h": 6
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "table",
+          "url": "https://api.open-meteo.com/v1/forecast?latitude=-34.6037&longitude=-58.3816&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation&timezone=UTC&past_days=1&forecast_days=2",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "current",
+          "columns": [
+            {
+              "selector": "apparent_temperature",
+              "text": "Sensación",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 25
+              },
+              {
+                "color": "red",
+                "value": 32
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value"
+      }
+    },
+    {
+      "id": 4,
+      "type": "gauge",
+      "title": "Humedad relativa",
+      "description": "Porcentaje de vapor de agua en el aire respecto del máximo posible a esa temperatura. 40–70 % es confortable.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 1,
+        "w": 4,
+        "h": 6
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "table",
+          "url": "https://api.open-meteo.com/v1/forecast?latitude=-34.6037&longitude=-58.3816&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation&timezone=UTC&past_days=1&forecast_days=2",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "current",
+          "columns": [
+            {
+              "selector": "relative_humidity_2m",
+              "text": "Humedad",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 40
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdMarkers": true,
+        "showThresholdLabels": false
+      }
+    },
+    {
+      "id": 5,
+      "type": "gauge",
+      "title": "Viento",
+      "description": "Velocidad media del viento a 10 m de altura, en km/h. Arriba de 40 km/h es viento fuerte.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 1,
+        "w": 4,
+        "h": 6
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "table",
+          "url": "https://api.open-meteo.com/v1/forecast?latitude=-34.6037&longitude=-58.3816&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation&timezone=UTC&past_days=1&forecast_days=2",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "current",
+          "columns": [
+            {
+              "selector": "wind_speed_10m",
+              "text": "Viento",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "velocitykmh",
+          "min": 0,
+          "max": 80,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 25
+              },
+              {
+                "color": "orange",
+                "value": 40
+              },
+              {
+                "color": "red",
+                "value": 60
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdMarkers": true,
+        "showThresholdLabels": false
+      }
+    },
+    {
+      "id": 6,
+      "type": "text",
+      "title": "¿De dónde salen los datos?",
+      "description": "",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 1,
+        "w": 8,
+        "h": 6
+      },
+      "targets": [],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "**Fuente única:** plugin *Infinity* (lee JSON, CSV, XML y GraphQL desde cualquier URL).\n\n- Clima: `api.open-meteo.com` (~3 KB)\n- Sismos: `earthquake.usgs.gov` (~80 KB, M4.5+ última semana)\n\nLa transformación de datos se hace con **JSONata** en el *root selector* de cada consulta."
+      }
+    },
+    {
+      "id": 7,
+      "type": "timeseries",
+      "title": "Temperatura vs. sensación térmica (ayer · hoy · mañana)",
+      "description": "Serie horaria de 72 h: un día pasado y dos de pronóstico. La distancia entre las dos líneas muestra cuánto influyen viento y humedad.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 7,
+        "w": 16,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "timeseries",
+          "url": "https://api.open-meteo.com/v1/forecast?latitude=-34.6037&longitude=-58.3816&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation&timezone=UTC&past_days=1&forecast_days=2",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "$map(hourly.time, function($v, $i) { {\"time\": $v & \":00Z\", \"temp\": $$.hourly.temperature_2m[$i], \"feels\": $$.hourly.apparent_temperature[$i], \"rain\": $$.hourly.precipitation[$i]} })",
+          "columns": [
+            {
+              "selector": "time",
+              "text": "Hora",
+              "type": "timestamp"
+            },
+            {
+              "selector": "temp",
+              "text": "Temperatura",
+              "type": "number"
+            },
+            {
+              "selector": "feels",
+              "text": "Sensación térmica",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "gradientMode": "opacity"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "timeseries",
+      "title": "Lluvia por hora",
+      "description": "Precipitación acumulada en cada hora, en milímetros. 1 mm = 1 litro por metro cuadrado.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 7,
+        "w": 8,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "timeseries",
+          "url": "https://api.open-meteo.com/v1/forecast?latitude=-34.6037&longitude=-58.3816&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation&timezone=UTC&past_days=1&forecast_days=2",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "$map(hourly.time, function($v, $i) { {\"time\": $v & \":00Z\", \"temp\": $$.hourly.temperature_2m[$i], \"feels\": $$.hourly.apparent_temperature[$i], \"rain\": $$.hourly.precipitation[$i]} })",
+          "columns": [
+            {
+              "selector": "time",
+              "text": "Hora",
+              "type": "timestamp"
+            },
+            {
+              "selector": "rain",
+              "text": "Lluvia",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "suffix: mm",
+          "decimals": 1,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "lineWidth": 1
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [
+            "sum"
+          ]
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "row",
+      "title": "Sismos M4.5+ de la última semana · USGS (GeoJSON público)",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 15,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 10,
+      "type": "stat",
+      "title": "Sismos en 7 días",
+      "description": "Cantidad de terremotos de magnitud 4.5 o más registrados en el mundo en los últimos 7 días.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 4,
+        "h": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "table",
+          "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "$map(features, function($f) { {\"lugar\": $f.properties.place, \"mag\": $f.properties.mag, \"hora\": $f.properties.time, \"lat\": $f.geometry.coordinates[1], \"lon\": $f.geometry.coordinates[0], \"prof\": $f.geometry.coordinates[2]} })",
+          "columns": [
+            {
+              "selector": "lugar",
+              "text": "Lugar",
+              "type": "string"
+            },
+            {
+              "selector": "mag",
+              "text": "Magnitud",
+              "type": "number"
+            },
+            {
+              "selector": "hora",
+              "text": "Hora",
+              "type": "timestamp_epoch"
+            },
+            {
+              "selector": "lat",
+              "text": "Latitud",
+              "type": "number"
+            },
+            {
+              "selector": "lon",
+              "text": "Longitud",
+              "type": "number"
+            },
+            {
+              "selector": "prof",
+              "text": "Profundidad (km)",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^Magnitud$/",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value"
+      }
+    },
+    {
+      "id": 11,
+      "type": "stat",
+      "title": "Magnitud máxima",
+      "description": "El sismo más fuerte de la semana (escala de magnitud de momento). Cada punto entero es ~32 veces más energía.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 21,
+        "w": 4,
+        "h": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "table",
+          "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "$map(features, function($f) { {\"lugar\": $f.properties.place, \"mag\": $f.properties.mag, \"hora\": $f.properties.time, \"lat\": $f.geometry.coordinates[1], \"lon\": $f.geometry.coordinates[0], \"prof\": $f.geometry.coordinates[2]} })",
+          "columns": [
+            {
+              "selector": "lugar",
+              "text": "Lugar",
+              "type": "string"
+            },
+            {
+              "selector": "mag",
+              "text": "Magnitud",
+              "type": "number"
+            },
+            {
+              "selector": "hora",
+              "text": "Hora",
+              "type": "timestamp_epoch"
+            },
+            {
+              "selector": "lat",
+              "text": "Latitud",
+              "type": "number"
+            },
+            {
+              "selector": "lon",
+              "text": "Longitud",
+              "type": "number"
+            },
+            {
+              "selector": "prof",
+              "text": "Profundidad (km)",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 5.5
+              },
+              {
+                "color": "red",
+                "value": 6.5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "/^Magnitud$/",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none",
+        "textMode": "value"
+      }
+    },
+    {
+      "id": 12,
+      "type": "geomap",
+      "title": "Mapa de sismos",
+      "description": "Cada círculo es un sismo. Tamaño y color según la magnitud.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 16,
+        "w": 12,
+        "h": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "table",
+          "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "$map(features, function($f) { {\"lugar\": $f.properties.place, \"mag\": $f.properties.mag, \"hora\": $f.properties.time, \"lat\": $f.geometry.coordinates[1], \"lon\": $f.geometry.coordinates[0], \"prof\": $f.geometry.coordinates[2]} })",
+          "columns": [
+            {
+              "selector": "lugar",
+              "text": "Lugar",
+              "type": "string"
+            },
+            {
+              "selector": "mag",
+              "text": "Magnitud",
+              "type": "number"
+            },
+            {
+              "selector": "hora",
+              "text": "Hora",
+              "type": "timestamp_epoch"
+            },
+            {
+              "selector": "lat",
+              "text": "Latitud",
+              "type": "number"
+            },
+            {
+              "selector": "lon",
+              "text": "Longitud",
+              "type": "number"
+            },
+            {
+              "selector": "prof",
+              "text": "Profundidad (km)",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 5
+              },
+              {
+                "color": "orange",
+                "value": 5.5
+              },
+              {
+                "color": "red",
+                "value": 6.5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "view": {
+          "id": "zero",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 1
+        },
+        "controls": {
+          "showZoom": true,
+          "mouseWheelZoom": true
+        },
+        "basemap": {
+          "type": "osm-standard",
+          "name": "OpenStreetMap"
+        },
+        "layers": [
+          {
+            "type": "markers",
+            "name": "Sismos",
+            "tooltip": true,
+            "location": {
+              "mode": "coords",
+              "latitude": "Latitud",
+              "longitude": "Longitud"
+            },
+            "config": {
+              "showLegend": true,
+              "size": {
+                "field": "Magnitud",
+                "min": 3,
+                "max": 18,
+                "fixed": 5
+              },
+              "color": {
+                "field": "Magnitud",
+                "fixed": "dark-green"
+              },
+              "fillOpacity": 0.5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "type": "histogram",
+      "title": "Distribución de magnitudes",
+      "description": "Cuántos sismos cayeron en cada rango de magnitud (cubetas de 0.2). Siempre hay muchos más chicos que grandes.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 16,
+        "w": 8,
+        "h": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "table",
+          "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "$map(features, function($f) { {\"lugar\": $f.properties.place, \"mag\": $f.properties.mag, \"hora\": $f.properties.time, \"lat\": $f.geometry.coordinates[1], \"lon\": $f.geometry.coordinates[0], \"prof\": $f.geometry.coordinates[2]} })",
+          "columns": [
+            {
+              "selector": "lugar",
+              "text": "Lugar",
+              "type": "string"
+            },
+            {
+              "selector": "mag",
+              "text": "Magnitud",
+              "type": "number"
+            },
+            {
+              "selector": "hora",
+              "text": "Hora",
+              "type": "timestamp_epoch"
+            },
+            {
+              "selector": "lat",
+              "text": "Latitud",
+              "type": "number"
+            },
+            {
+              "selector": "lon",
+              "text": "Longitud",
+              "type": "number"
+            },
+            {
+              "selector": "prof",
+              "text": "Profundidad (km)",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "orange"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "bucketSize": 0.2,
+        "legend": {
+          "showLegend": false
+        }
+      },
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Magnitud"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "barchart",
+      "title": "Top 10 por magnitud",
+      "description": "Los diez sismos más fuertes de la semana, ordenados de mayor a menor.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 26,
+        "w": 10,
+        "h": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "table",
+          "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "$map(features, function($f) { {\"lugar\": $f.properties.place, \"mag\": $f.properties.mag, \"hora\": $f.properties.time, \"lat\": $f.geometry.coordinates[1], \"lon\": $f.geometry.coordinates[0], \"prof\": $f.geometry.coordinates[2]} })",
+          "columns": [
+            {
+              "selector": "lugar",
+              "text": "Lugar",
+              "type": "string"
+            },
+            {
+              "selector": "mag",
+              "text": "Magnitud",
+              "type": "number"
+            },
+            {
+              "selector": "hora",
+              "text": "Hora",
+              "type": "timestamp_epoch"
+            },
+            {
+              "selector": "lat",
+              "text": "Latitud",
+              "type": "number"
+            },
+            {
+              "selector": "lon",
+              "text": "Longitud",
+              "type": "number"
+            },
+            {
+              "selector": "prof",
+              "text": "Profundidad (km)",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 1,
+          "min": 4,
+          "color": {
+            "mode": "continuous-YlRd"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "xField": "Lugar",
+        "showValue": "always",
+        "legend": {
+          "showLegend": false
+        }
+      },
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "sort": [
+              {
+                "field": "Magnitud",
+                "desc": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "limit",
+          "options": {
+            "limitField": 10
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Lugar",
+                "Magnitud"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "table",
+      "title": "Detalle de sismos",
+      "description": "Lista completa: lugar, magnitud (con color), hora local y profundidad. Los sismos superficiales (< 70 km) suelen sentirse más.",
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "public-json"
+      },
+      "gridPos": {
+        "x": 10,
+        "y": 26,
+        "w": 14,
+        "h": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "public-json"
+          },
+          "type": "json",
+          "source": "url",
+          "parser": "backend",
+          "format": "table",
+          "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson",
+          "url_options": {
+            "method": "GET"
+          },
+          "root_selector": "$map(features, function($f) { {\"lugar\": $f.properties.place, \"mag\": $f.properties.mag, \"hora\": $f.properties.time, \"lat\": $f.geometry.coordinates[1], \"lon\": $f.geometry.coordinates[0], \"prof\": $f.geometry.coordinates[2]} })",
+          "columns": [
+            {
+              "selector": "lugar",
+              "text": "Lugar",
+              "type": "string"
+            },
+            {
+              "selector": "mag",
+              "text": "Magnitud",
+              "type": "number"
+            },
+            {
+              "selector": "hora",
+              "text": "Hora",
+              "type": "timestamp_epoch"
+            },
+            {
+              "selector": "lat",
+              "text": "Latitud",
+              "type": "number"
+            },
+            {
+              "selector": "lon",
+              "text": "Longitud",
+              "type": "number"
+            },
+            {
+              "selector": "prof",
+              "text": "Profundidad (km)",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "filterable": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Magnitud"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 5
+                    },
+                    {
+                      "color": "orange",
+                      "value": 5.5
+                    },
+                    {
+                      "color": "red",
+                      "value": 6.5
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Profundidad (km)"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "basic"
+                }
+              },
+              {
+                "id": "max",
+                "value": 700
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "displayName": "Magnitud",
+            "desc": true
+          }
+        ]
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Latitud": true,
+              "Longitud": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "row",
+      "title": "Alertas de la demo",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 36,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 17,
+      "type": "alertlist",
+      "title": "Estado de las alertas",
+      "description": "Reglas de la carpeta Charla. Cambian de Normal a Disparando sin recargar la página.",
+      "gridPos": {
+        "x": 0,
+        "y": 37,
+        "w": 24,
+        "h": 6
+      },
+      "options": {
+        "viewMode": "list",
+        "groupMode": "default",
+        "maxItems": 10,
+        "sortOrder": 1,
+        "dashboardAlerts": false,
+        "alertName": "",
+        "alertInstanceLabelFilter": "",
+        "stateFilter": {
+          "firing": true,
+          "pending": true,
+          "normal": true,
+          "noData": true,
+          "error": true
+        },
+        "showInstances": false
+      }
+    }
+  ]
+}
