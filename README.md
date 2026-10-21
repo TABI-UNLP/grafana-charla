@@ -73,6 +73,37 @@ Usuario local: `admin` / `admin`.
 
 UID: `charla-grafana-demo`. Lo sube `./demo.sh create`.
 
+## Las URLs de datos
+
+La demo usa dos APIs públicas, sin API key. Hay tres URLs: dos de clima y una de sismos.
+
+### Clima del dashboard
+
+https://api.open-meteo.com/v1/forecast?latitude=-34.6037&longitude=-58.3816&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation&timezone=UTC&past_days=1&forecast_days=2
+
+Open-Meteo devuelve el pronóstico de un punto, en JSON, unos 3 KB. El punto es el centro de Buenos Aires (`latitude=-34.6037`, `longitude=-58.3816`).
+
+Trae dos bloques, y cada uno alimenta paneles distintos:
+
+- `current`: el instante actual. Temperatura del aire a 2 m, humedad relativa, sensación térmica y viento a 10 m. Son los números grandes y los dos relojes.
+- `hourly`: la misma temperatura, la sensación y la lluvia en milímetros, hora por hora. `past_days=1` y `forecast_days=2` cubren desde ayer hasta pasado mañana. Son la serie de temperatura y las barras de lluvia.
+
+`timezone=UTC` deja las horas en UTC para que Grafana las lea sin corrimiento.
+
+### Clima de la alerta de calor
+
+https://api.open-meteo.com/v1/forecast?latitude=-34.6037&longitude=-58.3816&current=temperature_2m&timezone=UTC
+
+Es el mismo servicio y el mismo punto, recortado a un solo número: la temperatura actual. La alerta «Calor en Buenos Aires» compara ese valor con el umbral. No pide el pronóstico por hora porque la regla solo mira el ahora.
+
+### Sismos del dashboard y de la alerta
+
+https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson
+
+Feed público del USGS (Servicio Geológico de Estados Unidos), en GeoJSON, unos 80 KB. El nombre del archivo es el filtro: magnitud 4.5 o más, últimos 7 días, en todo el mundo.
+
+Cada sismo trae lugar, magnitud, hora, latitud, longitud y profundidad. Con eso se arman el conteo, el máximo, el mapa, el histograma, el top 10 y la tabla. La alerta «Sismo fuerte en la última semana» usa esta misma URL y se queda solo con la magnitud máxima.
+
 ## Qué mide cada panel
 
 Clima, Open-Meteo, Buenos Aires:
